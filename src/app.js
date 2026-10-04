@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const app = express();
 
-const ConnectDatabase = require("./database/database");
+const ConnectDatabase = require("./Day1/database/database");
 
 ConnectDatabase()
     .then(async () => {
