@@ -1,7 +1,8 @@
 const express = require("express")
 
 const ConnectDatabase = require("./Day1/database/database");
-const User = require("./Day2/user")
+const User = require("./Day2/user");
+const bycript = require("bcrypt")
 const app = express();
 
 
@@ -61,23 +62,22 @@ app.post("/post/user", async (req, res) => {
     try {
         const { firstName, lastName, email, password } = req.body;
 
+        const existingUser = await User.findOne({ email });
+
+        if (existingUser) {
+            return res.status(400).send("Email already registered")
+        };
+        const passwordHash = await bycript.hash(password, 10);
+
         const user = new User({
             firstName,
             lastName,
             email,
-            password
+            password: passwordHash
 
         });
-
-        const existingUser = await User.findOne({ email })
-
-        if (existingUser) {
-            res.status(400).send("Email already registered")
-        };
-
-
         await user.save();
-        res.send("User created successfully");
+        return res.status(201).send("User created successfully");
 
     } catch (error) {
         console.error(error);
