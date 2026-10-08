@@ -1,3 +1,6 @@
+const User = require("../Day2/user")
+const bcrypt = require("bcrypt")
+
 app.post("/post/user", async (req, res) => {
     try {
         const { firstName, lastName, email, password } = req.body;
@@ -7,7 +10,9 @@ app.post("/post/user", async (req, res) => {
         if (existingUser) {
             return res.status(400).send("Email already registered")
         };
-        const passwordHash = await bycript.hash(password, 10);
+
+        //bcrypt.hash its convert into hash ex Saikrishna => a random hash($s$udfhoofhedhf244f).. help full for password encrypted.
+        const passwordHash = await bcrypt.hash(password, 10);
 
         const user = new User({
             firstName,

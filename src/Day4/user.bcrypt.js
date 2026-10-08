@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema({
 
 
 userSchema.methods.validatePassword = async function (passwordInputByUser) {
+    //bcrypt.compar the db password and my plan password when im "<<login>>"
     const isPasswordValid = await bcrypt.compare(passwordInputByUser, passwordHash);
     return isPasswordValid
 };
